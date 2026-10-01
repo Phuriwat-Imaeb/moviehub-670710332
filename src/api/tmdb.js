@@ -1,5 +1,10 @@
 // ชั้นกลางสำหรับคุยกับ TMDB ทุกหน้าเรียกผ่านไฟล์นี้เท่านั้น (หน้าอื่นไม่ต้องรู้จัก URL หรือ key)
-import { onceADay } from './cache';
+export async function getMovies() {
+  const res = await fetch('/api/movies');
+  if (!res.ok) throw new Error(`Backend ตอบกลับ ${res.status}`);
+  const data = await res.json();
+  return data.items.map(m => ({ ...m, genre: m.genreTh || m.genre }));
+}
 
 const BASE = 'https://api.themoviedb.org/3';
 const KEY = process.env.REACT_APP_TMDB_KEY;          // มาจากไฟล์ .env
@@ -61,14 +66,14 @@ export async function getNowPlaying(pages = 3) {
 
 // "หนังทั้งหมดที่แอปใช้" โหลดจริงวันละครั้ง ที่เหลืออ่านจาก localStorage
 // หน้า Movies และหน้าแรกเรียกตัวนี้ จึงแชร์ข้อมูลชุดเดียวกัน
-export function getMovies() {
-  return onceADay(CACHE_KEY, () => getNowPlaying());
-}
+// export function getMovies() {
+//   return onceADay(CACHE_KEY, () => getNowPlaying());
+// }
 
 // ค้นหาที่ server (ใช้ในหน้า API Lab เพื่อดู JSON ดิบ หน้า Movies กรองในเครื่องแทน)
-export async function searchMovies(query) {
-  const data = await getJSON('/search/movie', { query });
-  return data.results.map(toMovie);
+ export async function searchMovies(query) {
+//   const data = await getJSON('/search/movie', { query });
+//   return data.results.map(toMovie);
 }
 
 // รายละเอียดเรื่องเดียว (ได้ genres เป็นชื่อมาเลย ไม่ต้องใช้ genreMap)
