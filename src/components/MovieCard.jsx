@@ -28,4 +28,8 @@ function MovieCard({ movie }) {
   );
 }
 
+<<<<<<< HEAD
 export default MovieCard;
+=======
+export default MovieCard;
+>>>>>>> 0d9fa06773c1fab1f4cd3e8c8e49c1a9dfee2865
